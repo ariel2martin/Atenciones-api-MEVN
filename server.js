@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
+const path = __dirname + '/atenciones/dist/';
 const app = express();
 
 var corsOptions = {
@@ -29,15 +29,19 @@ db.mongoose
     process.exit();
   });
 
-// simple route
+app.use('/css', express.static(path + 'css'));
+app.use('/fonts', express.static(path + 'fonts'));
+app.use('/js', express.static(path + 'js'));
+app.use('/img', express.static(path + 'img'));
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+
+  res.sendFile(path + "index.html");
 });
 
 require("./app/routes/routes")(app);
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 80;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
