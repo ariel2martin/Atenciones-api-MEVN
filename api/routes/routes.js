@@ -23,5 +23,5 @@ module.exports = app => {
 
     router.delete("/", comando.deleteAll);
 
-    app.use("/api/tutorials", router);
+    app.use("/api", router);
 };
