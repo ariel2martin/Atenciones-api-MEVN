@@ -7,42 +7,23 @@ Vue.use(VueRouter);
 //nombre igual que el path
 const routes = [
 
-  {
-    path: "/graficodinamico",
-    name: "graficodinamico",
-    component: () =>
-      import(/* webpackChunkName: "datos"*/ "./views/ej-nada.vue"),
-  },
+
   {
     path: "/",
-    name: "graficodinamico",
+    name: "atenciones",
     component: () =>
-      import(/* webpackChunkName: "datos"*/ "./views/ej-nada.vue"),
+      import(/* webpackChunkName: "datos"*/ "./views/e-formulario.vue"),
   }, {
-    path: "/relays",
-    name: "relays",
+    path: "/abm",
+    name: "abm",
     component: () =>
-      import(/* webpackChunkName: "datos"*/ "./views/ej-nada.vue"),
+      import(/* webpackChunkName: "datos"*/ "./views/e-abm.vue"),
   }, {
-    path: "/tabla",
-    name: "tabla",
+    path: "/enviar",
+    name: "enviar",
     component: () =>
-      import(/* webpackChunkName: "datos"*/ "./views/ej-nada.vue"),
-  }, {
-    path: "/asign",
-    name: "asign",
-    component: () =>
-      import(/* webpackChunkName: "datos"*/ "./views/ej-nada.vue"),
-  }, {
-    path: "/peer",
-    name: "peer",
-    component: () =>
-      import(/* webpackChunkName: "datos"*/ "./views/ej-nada.vue"),
-  }, {
-    path: "/sorteo",
-    name: "sorteo",
-    component: () =>
-      import(/* webpackChunkName: "datos"*/ "./views/ej-nada.vue"),
+      import(/* webpackChunkName: "datos"*/ "./views/e-enviar.vue"),
+
   },];
 
 const router = new VueRouter({

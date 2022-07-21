@@ -1,6 +1,6 @@
 export default {
   colors: {
-
+    background: '#4c84c7',
     complemento1: '#4c84c7',
     complemento2: '#40c5cf',
     complemento3: '#42b883',

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :style="{ background: '#F2F2F2' }">
     <v-navigation-drawer app class="fondito" v-model="drawer" temporary>
       <perfect-scrollbar>
         <v-icon
@@ -18,10 +18,8 @@
               </v-list-item-avatar>
 
               <v-list-item-content>
-                <v-list-item-title>Ariel Martin</v-list-item-title>
-                <v-list-item-subtitle
-                  >ariel2martin@gmail.com</v-list-item-subtitle
-                >
+                <v-list-item-title>Emergencias</v-list-item-title>
+                <v-list-item-subtitle>Planeamiento</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-card>
@@ -48,10 +46,10 @@
       </perfect-scrollbar>
     </v-navigation-drawer>
 
-    <v-app-bar app>
+    <v-app-bar app class="titulo">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Demo</v-toolbar-title>
+      <v-toolbar-title>Emergencias</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
@@ -69,47 +67,38 @@ export default {
     selectedItem: 0,
     items: [
       {
-        href: "graficodinamico",
+        href: "atenciones",
 
-        text: "Gráfico dinámico",
+        text: "Atenciones",
         icon: "mdi-swap-vertical-variant",
       },
       {
-        href: "sorteo",
+        href: "abm",
 
-        text: "Grupos de juegos",
+        text: "ABM listados",
         icon: "mdi-tournament",
       },
 
       {
-        href: "tabla",
+        href: "enviar",
 
-        text: "Tabla",
+        text: "Enviar al servidor",
         icon: "mdi-form-select",
-      },
-      {
-        href: "asign",
-
-        text: "Aplicar",
-        icon: "mdi-shuffle",
-      },
-      {
-        href: "peer",
-
-        text: "Videoconferencia",
-        icon: "mdi-video-outline",
-      },
-      {
-        href: "relays",
-
-        text: "IoT relays",
-        icon: "mdi-electric-switch",
       },
     ],
   }),
 };
 </script>
 <style scoped>
+.titulo {
+  background-image: url("assets/img/fachada.jpg");
+  background-repeat: no-repeat;
+  background-position: 0 20%;
+  background-size: cover;
+
+  background-blend-mode: overlay;
+}
+
 .fondito:before {
   overflow: hidden;
   content: " ";
@@ -120,10 +109,10 @@ export default {
   width: 100%;
   height: 100%;
 
-  opacity: 0.3;
-  background-image: url("assets/img/green-leaf.png");
+  opacity: 0.2;
+  background-image: url("assets/img/menu.jpg");
   background-repeat: no-repeat;
-  background-position: 50% 0;
+  background-position: 10% 0%;
   background-size: cover;
 }
 
