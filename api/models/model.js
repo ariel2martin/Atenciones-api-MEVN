@@ -1,7 +1,6 @@
-module.exports = mongoose => {
+module.exports = (mongoose) => {
     var schema = mongoose.Schema(
         {
-
             FechaAtencion: String,
             DiaAtencion: String,
             HoraAtencion: String,
@@ -26,10 +25,7 @@ module.exports = mongoose => {
             Resultado: String,
             MedicoTratante: String,
             SeTraslado: String,
-            DescansoMedico: String
-
-
-
+            DescansoMedico: String,
         },
         { timestamps: true }
     );
@@ -39,7 +35,21 @@ module.exports = mongoose => {
         object.id = _id;
         return object;
     });
+    var medico = mongoose.Schema(
+        {
+            MedicoTratante: String,
+        },
+        { timestamps: true }
+    );
+
+    medico.method("toJSON", function () {
+        const { __v, _id, ...object } = this.toObject();
+        object.id = _id;
+        return object;
+    });
+
+    const Medico = mongoose.model("medico", medico);
 
     const Atencion = mongoose.model("formulario", schema);
-    return Atencion;
+    return { Atencion, Medico };
 };

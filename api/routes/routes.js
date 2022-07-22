@@ -4,8 +4,13 @@ module.exports = app => {
     var router = require("express").Router();
 
 
-    router.post("/", comando.create);
 
+
+    router.post("/medicotratante/", comando.MedicoTratanteAlta);
+    router.get("/medicotratante/", comando.MedicoTratanteLista);
+    router.delete("/medicotratante/", comando.MedicoTratanteDelete);
+
+    router.post("/", comando.create);
 
     router.get("/", comando.findAll);
 
@@ -23,5 +28,7 @@ module.exports = app => {
 
     router.delete("/", comando.deleteAll);
 
+    //path que escucha la app
     app.use("/api", router);
+
 };

@@ -7,5 +7,5 @@ const db = {};
 db.mongoose = mongoose;
 db.url = dbConfig.url;
 db.formulario = require("./model.js")(mongoose);
-
+//console.log("index", db);
 module.exports = db;

@@ -1,5 +1,7 @@
 const db = require("../models");
-const Formulario = db.formulario;
+//console.log("controller", db);
+const Formulario = db.formulario.Atencion;
+const Medico = db.formulario.Medico;
 
 exports.create = (req, res) => {
   // Validate request
@@ -50,6 +52,71 @@ exports.create = (req, res) => {
       });
     });
 };
+exports.MedicoTratanteAlta = (req, res) => {
+  // Validate request
+  if (!req.body.MedicoTratante) {
+    res.status(400).send({ message: "debe tener Nombre" });
+    return;
+  }
+
+  const elFormulario = new Medico({
+
+    MedicoTratante: req.body.MedicoTratante,
+
+  });
+
+  // Save Formulario in the database
+  elFormulario
+    .save(elFormulario)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "hubo un error al inetentar grabar en la base de datos.",
+      });
+    });
+};
+
+exports.MedicoTratanteLista = (req, res) => {
+
+  Medico.find({}, { MedicoTratante: 1, _id: 0 })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Error al leer la abse de datos",
+      });
+    });
+};
+
+exports.MedicoTratanteDelete = (req, res) => {
+  const id = req.params.id;
+
+  Medico.findByIdAndRemove(id, { useFindAndModify: false })
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `no se puede borrar el medico con id=${id}. parece que no está en la lista!`,
+        });
+      } else {
+        res.send({
+          message: "borrado OK",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Fallo al borrar medico con id=" + id,
+      });
+    });
+};
+
+
 
 exports.findAll = (req, res) => {
   const title = req.query.title;
