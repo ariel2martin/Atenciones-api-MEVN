@@ -1,5 +1,6 @@
 <template>
   <div>
+    ABM
     <v-data-table
       :headers="tableheader"
       :items="tableData"
@@ -63,7 +64,12 @@ export default {
       Complementario5: config.colors.complemento5,
     };
   },
-
+  mounted() {
+    console.log("existo1");
+    this.getData();
+    console.log("existo2");
+    this.pepe();
+  },
   methods: {
     filterText(value, search, item) {
       return (
@@ -76,21 +82,23 @@ export default {
           .indexOf(search.toLocaleLowerCase()) !== -1
       );
     },
-    async getData() {
+    pepe() {
+      console.log("aqui pepe");
+    },
+    getData() {
+      console.log("aqui");
       const axiosHeaders = {
         headers: {},
         params: {},
       };
 
-      await axios
-        .get(
-          "https://raw.githubusercontent.com/ariel2martin/presentacion/master/dist/derivados.json",
-          axiosHeaders
-        )
+      axios
+        .get("http://localhost/api/medicotratante", axiosHeaders)
         .then((res) => {
           // if (res.data[i].concepto == "Nafta Grado 3 (Ultra)")
-          for (var i in res.data) this.tableData.push(res.data[i]);
-
+          //for (var i in res.data) this.tableData.push(res.data[i]);
+          console.log(res);
+          console.log(res[1]);
           this.loading = false;
           //console.warn(this.tableData);
         })
@@ -99,6 +107,7 @@ export default {
           return;
         });
 
+      /*
       this.tableData.sort(function (a, b) {
         if (a.concepto > b.concepto) {
           return 1;
@@ -156,6 +165,7 @@ export default {
       }
       //* /
       //console.log(this.targetVal);
+      */
     },
   },
 };
