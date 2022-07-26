@@ -8,7 +8,7 @@ module.exports = app => {
 
     router.post("/medicotratante/", comando.MedicoTratanteAlta);
     router.get("/medicotratante/", comando.MedicoTratanteLista);
-    router.delete("/medicotratante/", comando.MedicoTratanteDelete);
+    router.delete("/medicotratante/:id", comando.MedicoTratanteDelete);
 
     router.post("/", comando.create);
 

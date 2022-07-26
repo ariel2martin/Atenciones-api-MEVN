@@ -1,61 +1,98 @@
 <template>
-  <div>
-    ABM
-    <v-data-table
-      :headers="tableheader"
-      :items="tableData"
-      :items-per-page="12"
-      class="elevation-1"
-      :loading="loading"
-      loading-text="Loading... Please wait"
-      multi-sort
-      :search="search"
-      :custom-filter="filterText"
-    >
-      <template v-slot:top>
-        <v-toolbar-title> </v-toolbar-title>
-        <v-toolbar flat>
-          <v-text-field
-            v-model="search"
-            label="Busca y filtra"
-            class="mx-4"
-          ></v-text-field>
-          <v-spacer></v-spacer>
-        </v-toolbar>
-      </template>
-      <template v-slot:expanded-item="{ headers, item }">
-        <td :colspan="headers.length">More info about {{ item.name }}</td>
-      </template>
-    </v-data-table>
-  </div>
+  <v-container>
+    <v-card class="mx-auto" max-width="400">
+      <v-data-table
+        :headers="tableheaderMedico"
+        :items="tablaMedico"
+        :items-per-page="5"
+        class="elevation-3 pa-4"
+        :loading="loading"
+        loading-text="Leyendo la base de datos"
+        :search="search"
+        :custom-filter="filterText"
+      >
+        <template v-slot:top>
+          <v-toolbar-title>Listado de Medicos</v-toolbar-title>
+          <v-toolbar flat>
+            <v-text-field
+              v-model="search"
+              label="Busca y filtra"
+              class="mx-4"
+            ></v-text-field>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+        </template>
+
+        <template v-slot:item.comandos="{ item }">
+          <v-icon small @click="deleteMedico(item)"> mdi-delete </v-icon>
+        </template>
+        <template v-slot:footer.page-text>
+          <v-btn
+            :color="Complementario2"
+            class="ma-2"
+            @click="overlayAgregaMedico = true"
+          >
+            <v-icon small> mdi-plus </v-icon>Agregar
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+    <v-overlay :value="overlayAgregaMedico">
+      <v-card class="mx-auto" elevation="24" :color="Complementario3">
+        <v-card-text>
+          <v-form ref="form">
+            <v-text-field
+              v-model="nuevoMedico[0].nombre"
+              :rules="[(v) => !!v || 'Faltó el nombre']"
+              required
+              label="Nombre"
+            ></v-text-field>
+
+            <v-btn
+              :color="Complementario4"
+              class="mr-4"
+              @click="agregaMedico(nuevoMedico)"
+            >
+              Agregar </v-btn
+            ><v-btn
+              :color="Complementario5"
+              class="mr-4"
+              @click="overlayAgregaMedico = false"
+            >
+              Cancelar
+            </v-btn>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-overlay>
+  </v-container>
 </template>
 <script>
-//import { Table, TableColumn } from "element-ui";
 import axios from "axios";
 import config from "../../configuraciones.js";
 export default {
   components: { config },
   data() {
     return {
-      show: true,
-
       loading: true,
+      overlayAgregaMedico: false,
       search: "",
-      tableheader: [
+      tableheaderMedico: [
         {
-          text: "Derivado",
+          text: "MedicoTratante",
           align: "start",
           sortable: true,
-          value: "concepto",
+          value: "MedicoTratante",
         },
-        { text: "Año", groupable: true, value: "año" },
-        { text: "Mes", value: "mes" },
-        { text: "metros cúbicos", align: "end", sortable: false, value: "m3" },
+        { text: "Desde", value: "desde", width: "30px" },
+        { text: "", value: "comandos", width: "10px" },
       ],
-      tableData: [],
-      selected: [],
-      targetVal: [],
-      datosgrafico: [],
+      tablaMedico: [],
+      nuevoMedico: [{ nombre: "" }],
+      axiosHeaders: {
+        headers: { "Content-type": "application/json" },
+        params: {},
+      },
 
       Complementario1: config.colors.complemento1,
       Complementario2: config.colors.complemento2,
@@ -65,10 +102,7 @@ export default {
     };
   },
   mounted() {
-    console.log("existo1");
     this.getData();
-    console.log("existo2");
-    this.pepe();
   },
   methods: {
     filterText(value, search, item) {
@@ -82,131 +116,95 @@ export default {
           .indexOf(search.toLocaleLowerCase()) !== -1
       );
     },
-    pepe() {
-      console.log("aqui pepe");
-    },
-    getData() {
-      console.log("aqui");
-      const axiosHeaders = {
-        headers: {},
-        params: {},
-      };
 
-      axios
-        .get("http://localhost/api/medicotratante", axiosHeaders)
+    async getData() {
+      await axios
+        .get("http://localhost/api/medicotratante", this.axiosHeaders)
         .then((res) => {
-          // if (res.data[i].concepto == "Nafta Grado 3 (Ultra)")
-          //for (var i in res.data) this.tableData.push(res.data[i]);
-          console.log(res);
-          console.log(res[1]);
+          for (var i in res.data) this.tablaMedico.push(res.data[i]);
+
+          //          console.log(res.data[1]);
           this.loading = false;
-          //console.warn(this.tableData);
         })
         .catch((e) => {
           console.log(e);
           return;
         });
+    },
+    async deleteMedico(item) {
+      let donde = this.tablaMedico.findIndex((i) => i === item);
+      console.log("borrando: ", item.MedicoTratante);
 
-      /*
-      this.tableData.sort(function (a, b) {
-        if (a.concepto > b.concepto) {
-          return 1;
-        }
-        if (a.concepto < b.concepto) {
-          return -1;
-        }
-
-        if (a.concepto == b.concepto) {
-          if (a.año > b.año) {
-            return 1;
-          }
-          if (a.año < b.año) {
-            return -1;
-          }
-
-          if (a.año == b.año) {
-            if (parseInt(a.mes) > parseInt(b.mes)) {
-              return 1;
-            }
-            if (parseInt(a.mes) < parseInt(b.mes)) {
-              return -1;
-            }
-            return 0;
-          }
-        }
-      });
-
-      let primeravez = true;
-      let cambioconcepto = "nada";
-      let puntero = 0;
-      let valor = 0;
-      // *
-      for (var i in this.tableData) {
-        if (cambioconcepto != this.tableData[i].concepto) {
-          if (cambioconcepto != "nada") {
-            primeravez = false;
-            puntero++;
-          }
-          cambioconcepto = this.tableData[i].concepto;
-          this.datosgrafico.push({
-            text: cambioconcepto,
-            value: [],
+      if (donde > -1) {
+        await axios
+          .delete(
+            "http://localhost/api/medicotratante/" + item.id,
+            this.axiosHeaders
+          )
+          .then((res) => {
+            this.tablaMedico.splice(donde, 1);
+          })
+          .catch((e) => {
+            console.log(e);
+            return;
           });
-        }
-        //console.warn(puntero);
-        valor = Math.floor(parseInt(this.tableData[i].m3) / 1000);
-        if (primeravez) {
-          this.selected.push(valor);
-          this.targetVal.push(valor);
-          this.datosgrafico[0].value.push(valor);
-        } else {
-          this.datosgrafico[puntero].value.push(valor);
+      } else alert("No puedo manejar este nombre: " + item.MedicoTratante);
+    },
+    async agregaMedico(datos) {
+      //this.listado.push(datos);
+
+      for (var i in datos) {
+        if (datos[i].nombre > " ") {
+          let nuevo = this.normalize(datos[i].nombre);
+          if (!this.medicoDuplicado(nuevo)) {
+            console.log("agrego: ", nuevo);
+            let payload = { MedicoTratante: nuevo };
+
+            await axios
+              .post(
+                "http://localhost/api/medicotratante",
+                payload,
+                this.axiosHeaders
+              )
+              .then((res) => {
+                this.tablaMedico = [];
+                (this.nuevoMedico = [{ nombre: "" }]),
+                  (this.overlayAgregaMedico = false);
+                this.getData();
+              })
+              .catch((e) => {
+                console.log(e);
+                return;
+              });
+          } else {
+            alert("Este medico ya está en la lista");
+          }
         }
       }
-      //* /
-      //console.log(this.targetVal);
-      */
+    },
+    medicoDuplicado(nombr) {
+      if (
+        this.tablaMedico.find((e) => e.MedicoTratante == nombr) == undefined
+      ) {
+        return false;
+      } else {
+        this.nuevoMedico = [{ nombre: nombr }];
+        return true;
+      }
+    },
+
+    normalize(string) {
+      //return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+      return string
+        .trim()
+        .replace("  ", " ")
+        .replace("  ", " ")
+        .replace("  ", " ")
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
     },
   },
 };
 </script>
-<style scoped lang="scss">
-@use "sass:math";
-@import "./configuraciones.scss";
-body {
-  font-family: "Mada", sans-serif;
-  background: $background;
-}
-
-span {
-  color: white;
-}
-
-svg {
-  width: 80%;
-  text {
-    fill: grey;
-    font-family: "Mada", sans-serif;
-  }
-}
-
-line {
-  stroke: #555;
-  stroke-width: 2px;
-}
-
-select {
-  font-family: "Mada", sans-serif;
-  background: #444;
-  color: #ccc;
-  border: 0;
-  width: 200px;
-  margin: 0 0 25px;
-  outline: 0;
-  cursor: pointer;
-  height: 35px;
-  option {
-    font-family: "Mada", sans-serif;
-  }
-}
-</style>

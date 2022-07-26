@@ -14,12 +14,12 @@
           <v-card style="background: transparent">
             <v-list-item class="pb-3">
               <v-list-item-avatar>
-                <v-img src="@/assets/img/logo.jpg"></v-img>
+                <v-img src="@/assets/img/logo.png"></v-img>
               </v-list-item-avatar>
 
               <v-list-item-content>
-                <v-list-item-title>Emergencias</v-list-item-title>
-                <v-list-item-subtitle>Planeamiento</v-list-item-subtitle>
+                <v-list-item-title>Jose Maria</v-list-item-title>
+                <v-list-item-subtitle>Emergencias s.a.</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-card>

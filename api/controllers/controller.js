@@ -82,14 +82,17 @@ exports.MedicoTratanteAlta = (req, res) => {
 
 exports.MedicoTratanteLista = (req, res) => {
 
-  Medico.find({}, { MedicoTratante: 1, _id: 0 })
+  Medico.find({}, {
+    MedicoTratante: 1,
+    desde: { $dateToString: { format: "%d/%m/%Y", date: "$updatedAt" } }
+  })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Error al leer la abse de datos",
+          err.message || "Error al leer la base de datos",
       });
     });
 };
