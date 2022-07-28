@@ -70,19 +70,12 @@ export default {
         href: "atenciones",
 
         text: "Atenciones",
-        icon: "mdi-swap-vertical-variant",
+        icon: "mdi-format-columns",
       },
       {
         href: "abm",
 
         text: "ABM listados",
-        icon: "mdi-tournament",
-      },
-
-      {
-        href: "enviar",
-
-        text: "Enviar al servidor",
         icon: "mdi-form-select",
       },
     ],

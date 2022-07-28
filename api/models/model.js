@@ -2,8 +2,7 @@ module.exports = (mongoose) => {
     var schema = mongoose.Schema(
         {
             FechaAtencion: String,
-            DiaAtencion: String,
-            HoraAtencion: String,
+
             LugarAtencion: String,
             Dni: String,
             Nombre: String,
@@ -16,12 +15,12 @@ module.exports = (mongoose) => {
             DiagnosticoPresuntivo: String,
             Tipo: String,
             MedicacionIndicada1: String,
-            Cantidad: String,
+            Cantidad1: String,
             MedicacionIndicada2: String,
-            Cantidad: String,
+            Cantidad2: String,
             AparatoComprometido: String,
             UltimaPcr: String,
-            PruebaAntigeno: Boolean,
+            PruebaAntigeno: String,
             Resultado: String,
             MedicoTratante: String,
             SeTraslado: String,

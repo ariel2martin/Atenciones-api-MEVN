@@ -9,6 +9,12 @@ const routes = [
 
 
   {
+
+    path: "/atenciones",
+    name: "atenciones",
+    component: () =>
+      import(/* webpackChunkName: "datos"*/ "./views/e-formulario.vue"),
+  }, {
     path: "/",
     name: "atenciones",
     component: () =>
@@ -18,12 +24,6 @@ const routes = [
     name: "abm",
     component: () =>
       import(/* webpackChunkName: "datos"*/ "./views/e-abm.vue"),
-  }, {
-    path: "/enviar",
-    name: "enviar",
-    component: () =>
-      import(/* webpackChunkName: "datos"*/ "./views/e-enviar.vue"),
-
   },];
 
 const router = new VueRouter({

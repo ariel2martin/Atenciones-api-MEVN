@@ -3,9 +3,6 @@ module.exports = app => {
 
     var router = require("express").Router();
 
-
-
-
     router.post("/medicotratante/", comando.MedicoTratanteAlta);
     router.get("/medicotratante/", comando.MedicoTratanteLista);
     router.delete("/medicotratante/:id", comando.MedicoTratanteDelete);

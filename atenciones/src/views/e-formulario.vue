@@ -1,249 +1,274 @@
 <template>
-  <v-layout class="imagentrasera esmerilado">
-    <v-container class="esmerilado">
-      <v-row justify="space-around">
-        <v-col>
-          <v-select
-            class="borde"
-            :items="tipoAtencion"
-            label="tipoAtencion"
-            name="Tipo"
-            hide-details
-            single-line
-          ></v-select>
-        </v-col>
-        <v-col>
-          <v-text-field
-            class="borde"
-            type="datetime-local"
-            label="Fecha y hora de la atención"
-            name="FechaAtencion"
-            hide-details
-            single-line
-          ></v-text-field>
-        </v-col>
-        <v-col>
-          <v-select
-            class="borde"
-            :items="lugarAtencion"
-            label="Lugar de la atención"
-            name="lugarAtencion"
-            hide-details
-            single-line
-          ></v-select>
-        </v-col>
-      </v-row>
+  <v-layout class="imagentrasera">
+    <div class="container esmerilado">
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-row dense>
+          <v-col cols="3">
+            <v-select
+              :rules="reglaCompleto"
+              class="borde"
+              :items="tipoAtencion"
+              label="tipoAtencion"
+              v-model="completado.Tipo"
+              hide-details
+            ></v-select>
+            <v-text-field
+              required
+              :rules="reglaCompleto"
+              class="borde"
+              type="datetime-local"
+              label="Fecha y hora de la atención"
+              v-model="completado.FechaAtencion"
+              hide-details
+            ></v-text-field>
+            <v-select
+              :rules="reglaCompleto"
+              class="borde"
+              :items="lugarAtencion"
+              label="Lugar de la atención"
+              v-model="completado.LugarAtencion"
+              hide-details
+            ></v-select>
+            <v-select
+              :rules="reglaCompleto"
+              class="borde"
+              :items="medico"
+              label="Médico tratante"
+              v-model="completado.MedicoTratante"
+              hide-details
+            ></v-select>
+          </v-col>
 
-      <v-row justify="space-around">
-        <v-col>
-          <v-text-field
-            name="nombre"
-            class="borde"
-            label="Nombre paciente"
-            required
-            hide-details
-            single-line
-          ></v-text-field
-        ></v-col>
-        <v-col>
-          <v-text-field
-            name="dni"
-            class="borde"
-            label="DNI"
-            required
-            hide-details
-            single-line
-          ></v-text-field
-        ></v-col>
-        <v-col
-          ><v-select
-            class="borde"
-            :items="sexo"
-            label="Sexo"
-            name="sexo"
-            hide-details
-            single-line
-          ></v-select>
-        </v-col>
-        <v-col>
-          <v-text-field
-            class="borde"
-            label="Edad"
-            name="edad"
-            hide-details
-            single-line
-            type="number"
-          ></v-text-field
-        ></v-col>
-        <v-col>
-          <v-text-field
-            class="borde"
-            label="Historia clínica"
-            name="historiaclinica"
-            hide-details
-            single-line
-          ></v-text-field>
-        </v-col>
-      </v-row>
+          <v-col cols="4">
+            <v-text-field
+              :rules="reglaCompleto"
+              v-model="completado.Nombre"
+              class="borde"
+              label="Nombre paciente"
+              required
+              hide-details
+            ></v-text-field>
 
-      <v-row justify="space-around">
-        <v-col>
-          <v-select
-            class="borde"
-            :items="empresa"
-            label="Empresa"
-            name="empresa"
-            hide-details
-            single-line
-          ></v-select>
-        </v-col>
-        <v-col>
-          <v-select
-            class="borde"
-            :items="medico"
-            label="Médico tratante"
-            name="medico"
-            hide-details
-            single-line
-          ></v-select
-        ></v-col>
-      </v-row>
+            <v-row dense justify="space-around"
+              ><v-col cols="6">
+                <v-text-field
+                  :rules="reglaCompleto"
+                  v-model="completado.Dni"
+                  class="borde"
+                  label="DNI"
+                  required
+                  hide-details
+                ></v-text-field> </v-col
+              ><v-col cols="3">
+                <v-select
+                  :rules="reglaCompleto"
+                  class="borde"
+                  :items="sexo"
+                  label="Sexo"
+                  v-model="completado.Sexo"
+                  hide-details
+                ></v-select
+              ></v-col>
+              <v-col cols="3">
+                <v-text-field
+                  required
+                  :rules="reglaCompleto"
+                  class="borde"
+                  label="Edad"
+                  v-model="completado.Edad"
+                  hide-details
+                  type="number"
+                  min="0"
+                  max="99"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-text-field
+              required
+              :rules="reglaCompleto"
+              class="borde"
+              label="Historia clínica"
+              v-model="completado.HistoriaClinica"
+              hide-details
+            ></v-text-field>
+            <v-select
+              :rules="reglaCompleto"
+              class="borde"
+              :items="empresa"
+              label="Empresa"
+              v-model="completado.Empresa"
+              hide-details
+            ></v-select>
+          </v-col>
+          <v-col cols="5">
+            <v-select
+              :rules="reglaCompleto"
+              class="borde"
+              :items="DesMotivoConsulta"
+              label="Motivo principal de consulta"
+              v-model="completado.MotivoPrincipal"
+              hide-details
+            ></v-select>
+            <v-select
+              :rules="reglaCompleto"
+              class="borde"
+              :items="DesMotivoConsulta"
+              label="Motivo secundario de consulta"
+              v-model="completado.MotivoSecundario"
+              hide-details
+            ></v-select>
+            <v-select
+              :rules="reglaCompleto"
+              class="borde"
+              :items="aparatoComprometido"
+              label="Aparato comprometido"
+              v-model="completado.AparatoComprometido"
+              hide-details
+            ></v-select>
+          </v-col>
+        </v-row>
 
-      <v-row justify="space-around"
-        ><v-col>
-          <v-select
-            class="borde"
-            :items="DesMotivoConsulta"
-            label="Motivo principal de consulta"
-            name="motivo1"
-            hide-details
-            single-line
-          ></v-select> </v-col
-        ><v-col>
-          <v-select
-            class="borde"
-            :items="DesMotivoConsulta"
-            label="Motivo secundario de consulta"
-            name="motivo2"
-            hide-details
-            single-line
-          ></v-select></v-col
-        ><v-col>
-          <v-select
-            class="borde"
-            :items="DesDiagnosticoFph"
-            label="Diagnóstico"
-            name="diagnóstico"
-            hide-details
-            single-line
-          ></v-select
-        ></v-col>
-      </v-row>
-      <v-row justify="space-around"
-        ><v-col>
-          <v-select
-            class="borde"
-            :items="aparatoComprometido"
-            label="Aparato comprometido"
-            name="aparatoComprometido"
-            hide-details
-            single-line
-          ></v-select></v-col
-        ><v-col>
-          <v-select
-            class="borde"
-            :items="medicacion"
-            label="Medicacion indicada"
-            name="medicacion1"
-            hide-details
-            single-line
-          ></v-select
-        ></v-col>
-        <v-col>
-          <v-text-field
-            class="borde"
-            label="Cant"
-            name="cant1"
-            hide-details
-            single-line
-            type="number"
-          ></v-text-field
-        ></v-col>
+        <v-row dense>
+          <v-col cols="6">
+            <v-select
+              :rules="reglaCompleto"
+              class="borde"
+              :items="DesDiagnosticoFph"
+              label="Diagnóstico"
+              v-model="completado.DiagnosticoPresuntivo"
+              hide-details
+            ></v-select>
+            <v-row no-gutters>
+              <v-col cols="10">
+                <v-select
+                  :rules="reglaCompleto"
+                  class="borde"
+                  :items="medicacion"
+                  label="Medicacion indicada"
+                  v-model="completado.MedicacionIndicada1"
+                  hide-details
+                ></v-select
+              ></v-col>
+              <v-col cols="2">
+                <v-text-field
+                  required
+                  :rules="reglaCompleto"
+                  class="borde"
+                  label="Cant"
+                  v-model="completado.Cantidad1"
+                  hide-details
+                  type="number"
+                  min="0"
+                ></v-text-field>
+              </v-col>
+            </v-row>
 
-        <v-col>
-          <v-select
-            class="borde"
-            :items="medicacion"
-            label="Medicacion indicada 2"
-            name="medicacion2"
-            hide-details
-            single-line
-          ></v-select
-        ></v-col>
-        <v-col>
-          <v-text-field
-            class="borde"
-            label="Cant"
-            name="cant2"
-            hide-details
-            single-line
-            type="number"
-          ></v-text-field
-        ></v-col>
-      </v-row>
-      <v-row justify="space-around">
-        <v-col>
-          <v-text-field
-            class="borde"
-            type="date"
-            label="última PCR"
-            name="ultimaPCR"
-            hide-details
-            single-line
-            v-model="ultimaPCR"
-          ></v-text-field>
-        </v-col>
-        <v-col>
-          <v-select
-            class="borde"
-            :items="sino"
-            label="Se realizó prueba de antígeno?"
-            name="pruebAntigeno"
-            hide-details
-            single-line
-          ></v-select></v-col
-        ><v-col>
-          <v-select
-            class="borde"
-            :items="resultado"
-            label="Resultado"
-            name="resultado"
-            hide-details
-            single-line
-          ></v-select
-        ></v-col>
-        <v-col>
-          <v-select
-            class="borde"
-            :items="seTraslado"
-            label="se trasladó?"
-            name="seTraslado"
-            hide-details
-            single-line
-          ></v-select
-        ></v-col>
-        <v-col>
-          <v-select
-            class="borde"
-            :items="sino"
-            label="Descanso médico"
-            name="descanso"
-            hide-details
-            single-line
-          ></v-select
-        ></v-col>
-      </v-row>
-    </v-container>
+            <v-row no-gutters>
+              <v-col cols="10">
+                <v-select
+                  :rules="reglaCompleto"
+                  class="borde"
+                  :items="medicacion"
+                  label="Medicacion indicada 2"
+                  v-model="completado.MedicacionIndicada2"
+                  hide-details
+                ></v-select>
+              </v-col>
+              <v-col cols="2">
+                <v-text-field
+                  required
+                  :rules="reglaCompleto"
+                  class="borde"
+                  label="Cant"
+                  v-model="completado.Cantidad2"
+                  hide-details
+                  type="number"
+                  min="0"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-col>
+
+          <v-col cols="6">
+            <v-row dense>
+              <v-col
+                ><v-text-field
+                  required
+                  :rules="reglaCompleto"
+                  class="borde"
+                  type="date"
+                  label="última PCR"
+                  v-model="completado.UltimaPcr"
+                  hide-details
+                ></v-text-field
+              ></v-col>
+              <v-col>
+                <v-select
+                  :rules="reglaCompleto"
+                  class="borde"
+                  :items="sino"
+                  label="Se realizó prueba de antígeno?"
+                  v-model="completado.PruebaAntigeno"
+                  hide-details
+                ></v-select
+              ></v-col>
+              <v-col>
+                <v-select
+                  :rules="reglaCompleto"
+                  class="borde"
+                  :items="resultado"
+                  label="Resultado"
+                  v-model="completado.Resultado"
+                  hide-details
+                ></v-select
+              ></v-col>
+            </v-row>
+
+            <v-row dense>
+              <v-col cols="5">
+                <v-select
+                  :rules="reglaCompleto"
+                  class="borde"
+                  :items="seTraslado"
+                  label="se trasladó?"
+                  v-model="completado.SeTraslado"
+                  hide-details
+                ></v-select
+              ></v-col>
+              <v-col cols="4">
+                <v-select
+                  :rules="reglaCompleto"
+                  class="borde"
+                  :items="sino"
+                  label="Descanso médico"
+                  v-model="completado.DescansoMedico"
+                  hide-details
+                ></v-select
+              ></v-col>
+            </v-row>
+            <v-row justify="space-around">
+              <v-col cols="auto" class="ml-auto">
+                <v-btn color="warning" @click="limpiar">limpiar</v-btn>
+              </v-col>
+
+              <v-col cols="auto">
+                <v-btn :disabled="!valid" color="success" @click="enviaData"
+                  >Grabar</v-btn
+                >
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-form>
+      <v-overlay :value="logoespera">
+        <v-progress-circular
+          :size="150"
+          :width="17"
+          color="purple"
+          indeterminate
+        ></v-progress-circular>
+      </v-overlay>
+    </div>
   </v-layout>
 </template>
 <script>
@@ -254,6 +279,13 @@ export default {
   components: { config },
   data() {
     return {
+      logoespera: false,
+      completado: {
+        Cantidad1: "1",
+        Cantidad2: "0",
+        MotivoSecundario: "-NA",
+        MedicacionIndicada2: "-NA",
+      },
       ultimaPCR: "1111-11-11",
       motivoAtencion: ["INGRESO", "CONTROL"],
       sino: ["SI", "NO"],
@@ -686,6 +718,9 @@ export default {
         "Vitacortil ( Betametasona + gentamicina + clotrimazol) ( cremas para dermatitis)",
       ],
       medico: [],
+      valid: true,
+      reglaCompleto: [(v) => !!v || "requerido"],
+      reglaLleno: [(v) => (v && v.length > 0) || "no debe estar vacío"],
     };
   },
   mounted() {
@@ -704,6 +739,61 @@ export default {
           return;
         });
     },
+
+    async enviaData() {
+      if (this.$refs.form.validate()) {
+        this.logoespera = true;
+        await axios
+          .post("http://localhost/api", this.completado, this.axiosHeaders)
+          .then((res) => {
+            console.log("grabado ok");
+            delete this.completado.a;
+            this.completado.Cantidad1 = "1";
+            this.completado.Cantidad2 = "0";
+            this.completado.MotivoSecundario = "-NA";
+            this.completado.MedicacionIndicada2 = "-NA";
+            delete this.completado.Tipo;
+            delete this.completado.Nombre;
+            delete this.completado.MotivoPrincipal;
+            delete this.completado.FechaAtencion;
+            delete this.completado.Dni;
+            delete this.completado.Sexo;
+            delete this.completado.Edad;
+            delete this.completado.HistoriaClinica;
+            delete this.completado.AparatoComprometido;
+            delete this.completado.DiagnosticoPresuntivo;
+            delete this.completado.MedicacionIndicada1;
+            delete this.completado.UltimaPcr;
+            delete this.completado.PruebaAntigeno;
+            delete this.completado.Resultado;
+            delete this.completado.SeTraslado;
+            delete this.completado.DescansoMedico;
+            this.$refs.form.resetValidation();
+            this.logoespera = false;
+          })
+          .catch((e) => {
+            console.log(e);
+            alert("error");
+            return;
+          });
+      }
+    },
+    limpiar() {
+      this.completado = {
+        Cantidad1: "1",
+        Cantidad2: "0",
+        MotivoSecundario: "-NA",
+        MedicacionIndicada2: "-NA",
+      };
+    },
+  },
+  watch: {
+    logoespera(val) {
+      val &&
+        setTimeout(() => {
+          this.logoespera = false;
+        }, 1000);
+    },
   },
 };
 </script>
@@ -711,26 +801,34 @@ export default {
 .imagentrasera {
   height: 100%;
   width: 100%;
-  background: url("../assets/img/imagentrasera.png") no-repeat center center;
+  background: url("../assets/img/imagentrasera.png") no-repeat center bottom;
   background-size: cover;
 }
 
 .esmerilado {
-  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
-  padding: 10px;
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  height: fit-content;
 }
 
 .borde {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(1.5px);
   -webkit-backdrop-filter: blur(1.5px);
   border-radius: 10px;
-  border: 5px solid rgba(255, 255, 255, 0.6);
-  margin: 10px;
-  padding: 5px 15px;
+  border: 4px solid rgba(255, 255, 255, 0.6);
+
+  padding: 15px 5px 5px 10px;
+  /* margin: 10px; */
+}
+.container {
+  width: 96%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  align-self: center;
 }
 </style>

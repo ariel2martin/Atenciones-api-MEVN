@@ -12,8 +12,6 @@ exports.create = (req, res) => {
 
   const elFormulario = new Formulario({
     FechaAtencion: req.body.FechaAtencion,
-    DiaAtencion: req.body.DiaAtencion,
-    HoraAtencion: req.body.HoraAtencion,
     LugarAtencion: req.body.LugarAtencion,
     Dni: req.body.Dni,
     Nombre: req.body.Nombre,
@@ -26,9 +24,9 @@ exports.create = (req, res) => {
     DiagnosticoPresuntivo: req.body.DiagnosticoPresuntivo,
     Tipo: req.body.Tipo,
     MedicacionIndicada1: req.body.MedicacionIndicada1,
-    Cantidad: req.body.Cantidad,
+    Cantidad1: req.body.Cantidad1,
     MedicacionIndicada2: req.body.MedicacionIndicada2,
-    Cantidad: req.body.Cantidad,
+    Cantidad2: req.body.Cantidad2,
     AparatoComprometido: req.body.AparatoComprometido,
     UltimaPcr: req.body.UltimaPcr,
     PruebaAntigeno: req.body.PruebaAntigeno ? req.body.PruebaAntigeno : false,
@@ -48,7 +46,7 @@ exports.create = (req, res) => {
       res.status(500).send({
         message:
           err.message ||
-          "hubo un error al inetentar grabar en la base de datos.",
+          "hubo un error al intentar grabar en la base de datos.",
       });
     });
 };
@@ -60,9 +58,7 @@ exports.MedicoTratanteAlta = (req, res) => {
   }
 
   const elFormulario = new Medico({
-
     MedicoTratante: req.body.MedicoTratante,
-
   });
 
   // Save Formulario in the database
@@ -81,18 +77,19 @@ exports.MedicoTratanteAlta = (req, res) => {
 };
 
 exports.MedicoTratanteLista = (req, res) => {
-
-  Medico.find({}, {
-    MedicoTratante: 1,
-    desde: { $dateToString: { format: "%d/%m/%Y", date: "$updatedAt" } }
-  })
+  Medico.find(
+    {},
+    {
+      MedicoTratante: 1,
+      desde: { $dateToString: { format: "%d/%m/%Y", date: "$updatedAt" } },
+    }
+  )
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Error al leer la base de datos",
+        message: err.message || "Error al leer la base de datos",
       });
     });
 };
@@ -118,8 +115,6 @@ exports.MedicoTratanteDelete = (req, res) => {
       });
     });
 };
-
-
 
 exports.findAll = (req, res) => {
   const title = req.query.title;
