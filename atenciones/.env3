@@ -1,4 +1,0 @@
-BASE_URL ='./'
-NODE_ENV=production
-#NODE_ENV=desarrollo
-PORT=80
