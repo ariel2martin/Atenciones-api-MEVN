@@ -1,4 +1,4 @@
-# MEVN Node.js Express VUE & MongoDB 
+# MEVN Node.js Express VUE & MongoDB,   API y Frontend
 Carga atenciones medicas en una base Mongo local
 la aplicacion es funcional y subida a github para poder ser base de desarrollo de otras aplicaciones
 
